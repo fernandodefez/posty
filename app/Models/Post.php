@@ -13,13 +13,15 @@ class Post extends Model
 
     protected $fillable = [
         'user_id',
+        'title',
+        'picture',
         'body'
     ];
 
     /**
      * Get the post that owns the comment.
      */
-    public function user() : BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
