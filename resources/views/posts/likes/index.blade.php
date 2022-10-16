@@ -1,31 +1,29 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between py-4 items-center m-0">
-            <h2 class="font-bold text-xl text-gray-800 leading-tight py-2">
-                {{ __("Post's Likes") }}
-            </h2>
-        </div>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-4">
-                <div class="px-6">
-                    <x-post :post="$post"></x-post>
-                </div>
-            </div>
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-4">
-                <div class="w-full bg-white p-6 rounded-lg">
-                    <p class="text-xl p-0 font-bold text-gray-800 mb-3">
-                        Likes
+    <div class="py-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <x-post :post="$post"></x-post>
+            <div class="overflow-hidden shadow-sm rounded">
+                <div class="w-full bg-white py-6 px-6 rounded">
+                    <p class="text-sm p-0 font-bold text-gray-700 text-opacity-90 mb-3">
+                        People who liked this post
                     </p>
                     @if($likes->count())
-                        <div class="grid grid-cols-1 divide-y">
+                        <div class="grid grid-cols-1 divide-y auto-cols-max">
                             @foreach($likes as $like)
                                 <div class="w-12/12 flex align-middle justify-between py-2">
                                     <div class="flex w-full items-center justify-start space-x-1">
+                                        <img class="mr-1.5 hover:opacity-75 w-8 h-8 rounded-full inline" src="{{ $like->user->avatar }}" alt="{{ $like->user->name }}"/>
                                         <a href="{{ route('users.index', $like->user->username) }}"
-                                           class="mr-2 text-blue-400 hover:text-blue-500 text-sm font-medium"> {{ $like->user->username }}
+                                           class="mr-1.5 text-blue-400 hover:text-blue-500 text-sm font-medium">
+                                            @auth
+                                                @if(Auth()->user()->username === $like->user->username)
+                                                    {{ __('you') }}
+                                                @else
+                                                    {{ $like->user->username }}
+                                                @endif
+                                            @else
+                                                {{ $like->user->username }}
+                                            @endauth
                                         </a>
                                         <span class="inline text-slate-400 text-xs">
                                         {{ _('( '. $like->created_at->diffForHumans(). ' )') }}
@@ -34,7 +32,7 @@
                                 </div>
                             @endforeach
                         </div>
-                        <div>
+                        <div class="mt-5">
                             {{ $likes->links() }}
                         </div>
                     @else
