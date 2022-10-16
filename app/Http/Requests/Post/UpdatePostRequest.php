@@ -14,7 +14,7 @@ class UpdatePostRequest extends FormRequest
      */
     public function authorize()
     {
-        $post = Post::find($this->route('post'))[0];
+        $post = Post::find($this->route('post')->id);
         return $post && $this->user()->can('update', $post);
     }
 
@@ -26,9 +26,13 @@ class UpdatePostRequest extends FormRequest
     public function rules()
     {
         return [
+            'title' => [
+                'required',
+                'max:80'
+            ],
             'body' => [
                 'required',
-                'max:350'
+                'max:500'
             ]
         ];
     }
