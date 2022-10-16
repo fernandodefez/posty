@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\ThirdPartyAuth\GoogleAuthenticationController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\Post\Like\LikeController;
 use App\Http\Controllers\Web\Post\PostController;
 use App\Http\Controllers\Web\User\UserController;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,29 +18,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/api/test', function() {
-    return view('api');
-})->name('api.test');
-
-Route::get('/', function() {
-    return view('welcome');
-})->name('index');
-
-
-Route::get('/home', function() {
-    return view('home');
-})->name('home');
-
-Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
-Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
 Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
 Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 
-Route::get('/users/{user:username}', [UserController::class, 'index'])->name('users.index');
-
 Route::get('/posts/{post}/likes', [LikeController::class, 'index'])->name('posts.likes.index');
 Route::post('/posts/{post}/likes', [LikeController::class, 'store'])->name('posts.likes.store');
 Route::delete('/posts/{post}/likes', [LikeController::class, 'destroy'])->name('posts.likes.destroy');
+
+Route::get('/users/{user:username}', [UserController::class, 'index'])->name('users.index');
+
+Route::prefix('/auth')->group(function () {
+    Route::get('/google', [GoogleAuthenticationController::class, 'redirect']);
+    Route::get('/google/callback', [GoogleAuthenticationController::class, 'handle']);
+});
+Route::get('/users/{user:username}', [UserController::class, 'index'])->name('users.index');
