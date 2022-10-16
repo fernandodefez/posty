@@ -17,29 +17,7 @@ class PostController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['index', 'show']);
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Application|Factory|View
-     */
-    public function index()
-    {
-        return view('posts.index', [
-            'posts' => Post::with(['user', 'likes'])->latest()->paginate(5)
-        ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return View
-     */
-    public function create(): View
-    {
-        return view('posts.create');
+        $this->middleware(['auth', 'verified'])->except(['show']);
     }
 
     /**
@@ -47,8 +25,9 @@ class PostController extends Controller
      *
      * @param StorePostRequest $storePostRequest
      * @param PostService $postService
+     * @return RedirectResponse
      */
-    public function store(StorePostRequest $storePostRequest, PostService $postService)
+    public function store(StorePostRequest $storePostRequest, PostService $postService): RedirectResponse
     {
         $postService->create($storePostRequest);
         $post = $storePostRequest->user()->posts()->latest()->first();
@@ -109,7 +88,7 @@ class PostController extends Controller
     {
         $this->authorize('delete', $post);
         $postService->destroy($post);
-        return redirect('posts')->with('success', 'The post was successfully removed');
+        return redirect('/users/' . $post->user->username)->with('success', 'The post was successfully removed');
     }
 }
 
