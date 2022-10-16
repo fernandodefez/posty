@@ -18,7 +18,7 @@ class UserController extends Controller
     {
         return view('users.index')->with([
             'user' => $user,
-            'posts' => $user->posts()->with(['user', 'likes'])->latest()->paginate(5)
+            'posts' => $user->posts()->with(['user', 'likes'])->withCount('likes')->latest()->paginate(5)
         ]);
     }
 }
