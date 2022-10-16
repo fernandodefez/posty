@@ -6,12 +6,9 @@
             </h2>
             @auth
                 <a href="{{ route('posts.create') }}"
-                   class="hover:bg-blue-400 group flex m-0 items-center rounded-md bg-blue-500 text-white text-sm font-medium pl-2 pr-3 py-2 shadow-sm"
+                   class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded font-bold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                    title="Create a new post">
-                    <svg width="20" height="20" fill="currentColor" class="mr-1" aria-hidden="true">
-                        <path d="M10 5a1 1 0 0 1 1 1v3h3a1 1 0 1 1 0 2h-3v3a1 1 0 1 1-2 0v-3H6a1 1 0 1 1 0-2h3V6a1 1 0 0 1 1-1Z" />
-                    </svg>
-                    <span class="m-0">New</span>
+                    {{ __('New') }}
                 </a>
             @endauth
         </div>
@@ -19,23 +16,43 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="px-6 border-b border-gray-200">
-                    @if($posts->count())
-                        <div class="w-full grid grid-cols-1 divide-y">
-                            @foreach($posts as $post)
-                                <x-post :post="$post"></x-post>
-                            @endforeach
+            <div class="w-full flex justify-end">
+                <div class="grid grid-cols-1">
+                    <form action="{{ route('posts.index') }}" method="get" role="search" class="flex items-center justify-between mb-8">
+                        <div class="relative">
+                            <input name="search" id="search" placeholder="Search for posts" class="transition-all text-sm font-medium w-full shadow-sm bg-white py-2 px-2 border-2 outline-2 outline-blue-600 rounded shadow-sm border-gray-300 focus:border-blue-400 focus:ring focus:ring-blue-400 focus:ring-opacity-50"
+                            @if(request('search')) value="{{ request('search') }}" @endif
+                            />
                         </div>
-                        <div class="w-full">
-                            {{ $posts->links() }}
+                        <div class="relative ml-2">
+                            <x-button>
+                                {{ __('Search') }}
+                            </x-button>
                         </div>
-                    @else
-                        <div class="text-gray-600 opacity-90 text-sm font-medium">
-                            There are no posts
-                        </div>
-                    @endif
+                    </form>
                 </div>
+            </div>
+            <div class="bg-transparent overflow-hidden">
+                @if($posts->count())
+                    <div class="grid grid-cols-3 gap-6 columns-auto">
+                        @foreach($posts as $post)
+                            <div class="w-full bg-white px-6 shadow-sm rounded">
+                                <x-post :post="$post"></x-post>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="w-full mt-8">
+                        {{ $posts->links() }}
+                    </div>
+                @else
+                    <div class="w-full bg-white px-6 shadow-sm rounded text-gray-700 p-6 opacity-90 text-sm font-medium">
+                        @if(request('search'))
+                            {{ __('We have not found any posts.') }}
+                        @else
+                            {{ __('There are any posts yet.') }}
+                        @endif
+                    </div>
+                @endif
             </div>
         </div>
     </div>
