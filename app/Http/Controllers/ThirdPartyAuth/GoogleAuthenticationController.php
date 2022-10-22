@@ -5,36 +5,46 @@ namespace App\Http\Controllers\ThirdPartyAuth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class GoogleAuthenticationController extends Controller
 {
-    public function redirect()
+    public function redirect($driver)
     {
-        return Socialite::driver('google')->redirect();
+        if ($driver == 'facebook' || $driver == 'google')
+            return Socialite::driver($driver)->redirect();
+        else
+            throw new NotFoundHttpException();
     }
 
-    public function handle()
+    public function handle($driver)
     {
-        $loggedUserData = Socialite::driver('google')->user();
+        if ($driver === 'facebook' || $driver === 'google') {
 
-        $user = User::firstOrCreate(
-            [
-                'email' => $loggedUserData->getEmail(),
-            ],
-            [
-                'name' => $loggedUserData->getName(),
-                'avatar' => $loggedUserData->getAvatar(),
-                'username' => Str::lower(Str::replace(' ', '', $loggedUserData->getName())),
-                'password' => '',
-                'provider' => 'google',
-                'provider_id' => $loggedUserData->getId()
-            ]
-        );
+            $account = Socialite::driver($driver)->user();
 
-        auth()->login($user);
+            $user = User::firstOrCreate(
+                [
+                    'email' => $account->getEmail()
+                ],
+                [
+                    'name' => $account->getName(),
+                    'avatar' => $account->getAvatar(),
+                    'username' => Str::lower(Str::replace(' ', '', $account->getName())),
+                    'password' => '',
+                    'email_verified_at' => now(),
+                    'provider' => $driver,
+                    'provider_id' => $account->getId()
+                ]
+            );
 
-        return redirect(RouteServiceProvider::HOME);
+            auth()->login($user);
+
+            return redirect(RouteServiceProvider::HOME);
+        }
+        throw new NotFoundHttpException();
     }
 }

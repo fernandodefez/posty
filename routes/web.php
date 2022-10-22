@@ -31,8 +31,8 @@ Route::delete('/posts/{post}/likes', [LikeController::class, 'destroy'])->name('
 
 Route::get('/users/{user:username}', [UserController::class, 'index'])->name('users.index');
 
-Route::prefix('/auth')->group(function () {
-    Route::get('/google', [GoogleAuthenticationController::class, 'redirect']);
-    Route::get('/google/callback', [GoogleAuthenticationController::class, 'handle']);
+Route::prefix('/oauth')->group(function () {
+    Route::get('/{driver}', [GoogleAuthenticationController::class, 'redirect']);
+    Route::get('/{driver}/callback', [GoogleAuthenticationController::class, 'handle']);
 });
 Route::get('/users/{user:username}', [UserController::class, 'index'])->name('users.index');

@@ -44,7 +44,7 @@
                 </div>
             </div>
 
-            <div class="flex items-center justify-between mt-2">
+            <div class="flex items-center justify-between mt-3">
                 <!-- Remember Me -->
                 <label for="remember_me" class="inline-flex items-center">
                     <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="remember">
@@ -71,11 +71,11 @@
 
             <!-- Third Party Authentication -->
             <div class="grid grid-cols-3 gap-5 my-4">
-                <a href="{{ url('auth/google') }}" class="w-full inline-flex items-center font-medium justify-center space-x-24 px-3.5 py-2.5 bg-blue-600 border border-transparent rounded text-xs text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-600 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+                <a href="{{ url('oauth/facebook') }}" class="w-full inline-flex items-center font-medium justify-center space-x-24 px-3.5 py-2.5 bg-blue-600 border border-transparent rounded text-xs text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-600 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/1365px-Facebook_f_logo_%282019%29.svg.png"
                          class="h-5 w-5 shadow-none" alt="posty-login-with-facebook">
                 </a>
-                <a href="{{ url('auth/google') }}" class="w-full inline-flex items-center font-medium justify-center space-x-24 px-3.5 py-2.5 bg-white border border-transparent rounded text-xs border-2 border-gray-200 shadow-sm text-gray-900 uppercase tracking-widest hover:bg-gray-100 active:bg-gray-100 focus:outline-none focus:border-gray-200 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+                <a href="{{ url('oauth/google') }}" class="w-full inline-flex items-center font-medium justify-center space-x-24 px-3.5 py-2.5 bg-white border border-transparent rounded text-xs border-2 border-gray-200 shadow-sm text-gray-900 uppercase tracking-widest hover:bg-gray-100 active:bg-gray-100 focus:outline-none focus:border-gray-200 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
                     <svg class="fill-current w-4 h-4 mr-2" viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg">
                         <path d="M533.5 278.4c0-18.5-1.5-37.1-4.7-55.3H272.1v104.8h147c-6.1 33.8-25.7 63.7-54.4 82.7v68h87.7c51.5-47.4 81.1-117.4 81.1-200.2z" fill="#4285f4"/>
                         <path d="M272.1 544.3c73.4 0 135.3-24.1 180.4-65.7l-87.7-68c-24.4 16.6-55.9 26-92.6 26-71 0-131.2-47.9-152.8-112.3H28.9v70.1c46.2 91.9 140.3 149.9 243.2 149.9z" fill="#34a853"/>
