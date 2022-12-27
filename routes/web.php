@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ThirdPartyAuth\GoogleAuthenticationController;
+use App\Http\Controllers\ThirdPartyAuth\ThirdPartyAuthenticationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\Post\Like\LikeController;
@@ -32,7 +32,7 @@ Route::delete('/posts/{post}/likes', [LikeController::class, 'destroy'])->name('
 Route::get('/users/{user:username}', [UserController::class, 'index'])->name('users.index');
 
 Route::prefix('/oauth')->group(function () {
-    Route::get('/{driver}', [GoogleAuthenticationController::class, 'redirect']);
-    Route::get('/{driver}/callback', [GoogleAuthenticationController::class, 'handle']);
+    Route::get('/{driver}', [ThirdPartyAuthenticationController::class, 'redirect']);
+    Route::get('/{driver}/callback', [ThirdPartyAuthenticationController::class, 'handle']);
 });
 Route::get('/users/{user:username}', [UserController::class, 'index'])->name('users.index');

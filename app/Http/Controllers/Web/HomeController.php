@@ -15,7 +15,7 @@ class HomeController extends Controller
         if (!empty(request('search'))) {
             $posts = $postService->search(request('search'))->inRandomOrder()->paginate(10);
         } else {
-            $posts = Post::with(['user', 'likes'])->inRandomOrder()->paginate(10);
+            $posts = Post::with(['user', 'likes'])->orderBy('id', 'DESC')->paginate(10);
         }
         return view('home', [
             'posts' => $posts

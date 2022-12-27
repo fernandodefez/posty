@@ -1,21 +1,21 @@
 @php use Illuminate\Support\Facades\Auth; @endphp
 @props(['post' => $post])
-<div class="p-6 bg-white shadow-sm rounded">
+<div class="p-6 bg-white dark:bg-neutral-800 shadow-sm rounded">
     <div class="flex w-full justify-between items-start space-x-1">
         <div class="w-10/12 sm:w-11/12 p-0 m-0 flex mb-4">
             <div class="inline mr-2">
                 <a href="{{ route('users.index', $post->user->username) }}"
                    class="text-sm outline-none">
                    <!-- hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 -->
-                    <img class="hover:opacity-75 w-9 h-9 rounded-full sm:mb-0 inline" src="{{ $post->user->avatar }}" alt="Jese Leos image" loading="lazy"/>
+                    <img class="hover:opacity-75 w-9 h-9 rounded-full sm:mb-0 inline" src="{{ $post->user->avatar }}" alt="{{ $post->user->username }}" loading="lazy"/>
                 </a>
             </div>
-            <div class="inline grid grid-cols-1 grid-rows-2">
+            <div class="grid grid-cols-1 grid-rows-2">
                 <a href="{{ route('users.index', $post->user->username) }}"
-                   class="row font-bold text-gray-600 p-0 text-sm hover:text-gray-800 outline-none">
+                   class="row mb-0.5 font-bold p-0 text-sm text-neutral-700 hover:text-purple-800 dark:text-neutral-300 dark:hover:text-white outline-none">
                     {{ $post->user->username }}
                 </a>
-                <span class="row text-slate-500 text-xs block">{{ $post->created_at->diffForHumans() }}</span>
+                <span class="row text-neutral-900 dark:text-neutral-100 text-xs block">{{ $post->created_at->diffForHumans() }}</span>
             </div>
         </div>
         @auth()
@@ -31,7 +31,7 @@
                         <div id="dropdownDotsHorizontal{{$post->id}}" class="hidden z-10 w-28 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                             <ul class="py-1 text-sm text-gray-600 dark:text-gray-200" aria-labelledby="dropdownMenuIconHorizontalButton{{$post->id}}">
                                 <li>
-                                    <a href="{{ route('posts.edit', $post) }}" class="flex items-center text-sm font-medium block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    <a href="{{ route('posts.edit', $post) }}" class="flex items-center text-sm font-medium py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 inline mr-1">
                                             <path d="M2.695 14.763l-1.262 3.154a.5.5 0 00.65.65l3.155-1.262a4 4 0 001.343-.885L17.5 5.5a2.121 2.121 0 00-3-3L3.58 13.42a4 4 0 00-.885 1.343z"/>
                                         </svg> Edit
@@ -57,20 +57,22 @@
         @endauth
     </div>
     @if($post->picture)
-    <div class="w-full">
-        <img class="w-full hover:opacity-75 h-80 mb-4"
-             src="@if(filter_var($post->picture, FILTER_VALIDATE_URL)){{ $post->picture }}@else{{ url('storage/posts/'.$post->picture) }}@endif" alt="{{ $post->title }}" loading="lazy">
-    </div>
+    <a class="w-full" href="{{ route('posts.show', $post) }}">
+        <img class="w-full hover:opacity-90 h-80 mb-4"
+             src="@if(filter_var($post->picture, FILTER_VALIDATE_URL)){{ $post->picture }}@else{{ url('storage/posts/'.$post->picture) }}@endif" alt="{{ $post->user->usernmae . '-' . $post->title . '-image' }}" loading="lazy">
+    </a>
     @endif
-    <a href="{{ route('posts.show', $post) }}" class="text-sm text-gray-700 font-bold"> {{ $post->title }} </a>
+    <a href="{{ route('posts.show', $post) }}" class="text-sm text-neutral-700 hover:text-purple-800 dark:text-neutral-300 dark:hover:text-white dark:hover:text-neutral-300 font-bold"> {{ $post->title }} </a>
     @if(strlen($post->body) >= 100 && request()->routeIs('home'))
-        <p class="text-sm mb-1 mt-3 text-gray-500 font-semibold">
-            {{ Str::limit($post->body, 300, '...')}} <a href="{{ route('posts.show', $post) }}" class="mb-6 text-xs text-blue-500 font-medium hover:text-blue-600 outline-none">
+        <p class="text-sm mb-1 mt-3 text-neutral-600 dark:text-neutral-400 font-semibold">
+            {{ Str::limit($post->body, 300, '...')}} <a href="{{ route('posts.show', $post) }}" class="mb-6 text-xs font-semibold
+                text-purple-700 hover:text-purple-800
+                dark:text-purple-400 dark:hover:text-purple-500 outline-none">
                 {{ __('Read more') }}
             </a>
         </p>
     @else
-        <p class="my-3 text-sm text-gray-500 font-semibold"> {{ $post->body }} </p>
+        <p class="my-3 text-sm text-neutral-700 dark:text-neutral-300 font-semibold"> {{ $post->body }} </p>
     @endif
     <div class="flex mt-2 flex-col">
         @auth
@@ -99,7 +101,7 @@
                 </form>
             @endcan
         @endauth
-        <div class="flex items-center justify-start text-slate-700 space-x-2 mt-2">
+        <div class="flex items-center justify-start text-neutral-700 hover:text-purple-800 dark:text-neutral-300 dark:hover:text-white dark:hover:text-neutral-300 space-x-2 mt-2">
             <a href="{{ route('posts.likes.index', $post) }}" class="flex space-x-1 items-center">
                 <span class="text-xs font-medium">
                     {{ $post->likes->count() }} {{ Str::plural('like', $post->likes->count() ) }}

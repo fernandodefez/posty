@@ -4,7 +4,11 @@
             <div class="overflow-hidden shadow-sm rounded">
                 <div class="w-full bg-white p-6 shadow-sm rounded">
                     <div class="flex justify-end">
-                        <button id="dropdownButton" data-dropdown-toggle="dropdown" class="inline-block text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">
+                        <button 
+                        id="dropdownButton" 
+                        data-dropdown-toggle="dropdown" 
+                        class="inline-block text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" 
+                        type="button">
                             <span class="sr-only">Open dropdown</span>
                             <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path></svg>
                         </button>
@@ -47,38 +51,48 @@
             </div>
             <div class="bg-transparent overflow-hidden">
                 @auth
-                    <div class="bg-white overflow-hidden shadow-sm rounded mb-8">
-                        <div class="p-6 bg-white">
-                            <form action="{{ route('posts.store') }}" method="post">
-                                @csrf
-                                <div class="relative">
-                                    <x-label for="title" :value="__('Title')"/>
-                                    <input id="title" type="text" name="title" value="{{ old('title') }}" placeholder="Title"
-                                           class="mt-2 mb-1.5 bg-gray-100 transition-all text-sm font-medium w-full py-2 px-2 border-2 outline-2 outline-blue-600 rounded shadow-sm border-gray-300 focus:border-blue-400 focus:ring focus:ring-blue-400 focus:ring-opacity-50 @error('title') border-2 bg-red-50 focus:border-red-400 focus:ring focus:ring-red-400 focus:ring-opacity-50 border-red-500 @enderror"/>
-                                    <div class="text-red-500 text-xs h-3 mb-1">
-                                        @error('title')
-                                        {{ $message }}
-                                        @enderror
-                                    </div>
+                <div class="bg-white overflow-hidden shadow-sm rounded mb-8">
+                    <div class="p-6 bg-white">
+                        <form action="{{ route('posts.store') }}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <div class="relative">
+                                <x-label for="title" :value="__('Title')"/>
+                                <input id="title" type="text" name="title" value="{{ old('title') }}" placeholder="Title"
+                                    class="mt-2 mb-1.5 bg-gray-100 transition-all text-sm font-medium w-full py-2 px-2 border-2 outline-2 outline-blue-600 rounded shadow-sm border-gray-300 focus:border-blue-400 focus:ring focus:ring-blue-400 focus:ring-opacity-50 @error('title') border-2 bg-red-50 focus:border-red-400 focus:ring focus:ring-red-400 focus:ring-opacity-50 border-red-500 @enderror"/>
+                                <div class="text-red-500 text-xs h-3 mb-1">
+                                    @error('title')
+                                    {{ $message }}
+                                    @enderror
                                 </div>
-                                <div class="relative mt-3">
-                                    <x-label for="body" :value="__('Body')"/>
-                                    <textarea name="body" id="body" cols="30" rows="4" placeholder="Post something!"
-                                              class="mt-2 bg-gray-100 transition-all text-sm font-medium w-full py-2 px-2 border-2 outline-2 outline-blue-600 rounded shadow-sm border-gray-300 focus:border-blue-400 focus:ring focus:ring-blue-400 focus:ring-opacity-50 @error('body') border-2 bg-red-50 focus:border-red-400 focus:ring focus:ring-red-400 focus:ring-opacity-50 border-red-500 @enderror">{{ old('body') }}</textarea>
-                                    <div class="text-red-500 text-xs h-3 mb-1">
-                                        @error('body')
-                                        {{ $message }}
-                                        @enderror
-                                    </div>
+                            </div>
+                            <div class="relative mt-3">
+                                <x-label for="picture" :value="__('Picture')"/>
+                                <input type="file" id="picture" name="picture" accept="image/png, image/jpeg" class="mt-2 bg-gray-100 transition-all text-sm font-medium w-full border-2 outline-2 outline-blue-600 rounded shadow-sm border-gray-300 focus:border-blue-400 focus:ring focus:ring-blue-400 focus:ring-opacity-50 @error('body') border-2 bg-red-50 focus:border-red-400 focus:ring focus:ring-red-400 focus:ring-opacity-50 border-red-500 @enderror" aria-describedby="file_input_help">
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
+                                <div class="text-red-500 text-xs h-3 mb-1">
+                                    @error('picture')
+                                    {{ $message }}
+                                    @enderror
                                 </div>
-                                <div class="mt-5">
-                                    <x-button>
-                                        {{ __('Publish post') }}
-                                    </x-button>
+                            </div>
+                            <div class="relative mt-3">
+                                <x-label for="body" :value="__('Body')"/>
+                                <textarea name="body" id="body" cols="30" rows="4" placeholder="Post something!"
+                                        class="mt-2 bg-gray-100 transition-all text-sm font-medium w-full py-2 px-2 border-2 outline-2 outline-blue-600 rounded shadow-sm border-gray-300 focus:border-blue-400 focus:ring focus:ring-blue-400 focus:ring-opacity-50 @error('body') border-2 bg-red-50 focus:border-red-400 focus:ring focus:ring-red-400 focus:ring-opacity-50 border-red-500 @enderror">{{ old('body') }}</textarea>
+                                <div class="text-red-500 text-xs h-3 mb-1">
+                                    @error('body')
+                                    {{ $message }}
+                                    @enderror
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                            <div class="mt-5">
+                                <x-button>
+                                    {{ __('Publish post') }}
+                                </x-button>
+                            </div>
+                        </form>
                     </div>
+                </div>
                 @endauth
                 @if($posts->count())
                     @foreach($posts as $post)
